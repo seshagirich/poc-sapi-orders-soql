@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="754cbc7e-0487-47b9-a132-5b9b70539ed9" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="poc-sapi-orders-soqlFlow" doc:id="8f000623-e238-40f0-9958-28668866958a" >
+		<http:listener doc:name="/v1/order/create" doc:id="07518a95-4715-4f40-a095-27389dc4d8d5" config-ref="HTTP_Listener_config" path="/v1/order/create"/>
+		<logger level="INFO" doc:name="****start flow*****" doc:id="9e9e9bcd-1b85-4ba4-aae6-caae739dc790" message="****start flow*****#[payload] "/>
+		<ee:transform doc:name="req" doc:id="ad2cd660-895c-45f8-8906-89bf20362f76" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[
+ {
+ "CustomerId__c": payload.customerId,
+ "company__c": payload.company,
+ "CustomerName__c": payload.customerName,
+ "phone__c": payload.addresses.phone[0],
+ "street__c": payload.addresses.street[0],
+ "city__c": payload.addresses.city[0],
+ "state__c": payload.addresses.state[0],
+ "postalCode__c": payload.addresses.postalCode[0],
+ "country__c": payload.addresses.country[0],
+ "preferredPaymentMethod__c": payload.preferredPaymentMethod,
+ "orderId__c": payload.orderHistory.orderId[0],
+ "Name": payload.orderHistory.orderId[0],
+ "orderDate__c": payload.orderHistory.orderDate[0],
+ "status__c": payload.orderHistory.status[0],
+ "totalAmount__c": payload.orderHistory.totalAmount[0] as String,
+ "productId__c": payload.orderHistory.items[0].productId[0],
+ "productName__c": payload.orderHistory.items[0].productName[0],
+ "quantity__c": payload.orderHistory.items[0].quantity[0] as String,
+ "price__c": payload.orderHistory.items[0].price[0] as String
+
+
+}
+]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="**order create table sql query print" doc:id="8c918558-66f0-4276-a140-c29ff64b7ef2" message="********order create table sql query print*****#[payload]*****"/>
+		<salesforce:create type="orderCreate__c" doc:name="orderCreate Create" doc:id="daa75703-8568-46b4-bd71-1c5c808199e9" config-ref="Salesforce_Config"/>
+		<ee:transform doc:name="Transform Message" doc:id="b2363b70-8c9d-4351-9a3e-3b4170df5bec" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="*******end flow ******" doc:id="3962cb8f-e047-46be-a33b-36b0794be9ef" message="*******end flow ******#[payload]"/>
+	</flow>
+</mule>

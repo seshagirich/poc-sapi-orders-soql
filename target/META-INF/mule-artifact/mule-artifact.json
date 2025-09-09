@@ -1,0 +1,28 @@
+{
+  "configs": [
+    "global.xml",
+    "poc-sapi-orders-soql.xml"
+  ],
+  "secureProperties": [],
+  "supportedJavaVersions": [],
+  "redeploymentEnabled": true,
+  "name": "ce6890ad-6542-4201-b89e-c87a21cbb960:poc-sapi-orders-soql:1.0.1",
+  "minMuleVersion": "4.9.0",
+  "requiredProduct": "MULE_EE",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedPackages": [],
+      "exportedResources": [
+        "dev.yaml",
+        "global.xml",
+        "log4j2.xml",
+        "poc-sapi-orders-soql.xml"
+      ]
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  }
+}
