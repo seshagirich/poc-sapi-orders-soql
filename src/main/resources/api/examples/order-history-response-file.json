@@ -1,0 +1,18 @@
+{
+  "data": [
+    {
+        "orderId": "ORD1030",
+        "orderDate": "2025-07-20",
+        "status": "Delivered",
+        "customerId": "WW-003",
+        "company": "eee12"
+    },
+	{
+        "orderId": "ORD1034",
+        "orderDate": "2025-07-20",
+        "status": "Delivered",
+        "customerId": "WW-003",
+        "company": "anixter"
+    }
+   ]
+}

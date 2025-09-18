@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="order-detail-ImplementationFlow-test-suite.xml" />
+	<munit:test name="order-detail-ImplementationFlow-test-suite-get:\v1\orders\(orderId):poc-sapi-ordes-soql-configTest" doc:id="f31fdb8c-6ed6-4a4a-b41f-9a3f0c4d5be4" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="c563c4b4-ba12-4f06-ba7a-ca34a0335a89" processor="salesforce:query">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Get the data from SOQL Query" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('order-detail-response.json')]" mediaType="application/json" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="aec10446-23b1-4952-b5d3-faa30e69c4f5" >
+				<munit:attributes value='#[{&#10;  "uriParams": {&#10;		"orderId": 123&#10;  }&#10;}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to get:\v1\orders\(orderId):poc-sapi-ordes-soql-config" doc:id="9de52f0b-79dd-4f9b-8b59-47458afa40dd" name="get:\v1\orders\(orderId):poc-sapi-ordes-soql-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="beab8f41-d5fe-4ba2-ad23-8c20ca4b6920" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+	
+	
+	
+	
+	
+	<munit:test name="order-detail-Implementatit:\v1\orders\(orderId):poc-sapi-ordes-soql-configTest-error_handling" doc:id="b59ab5f4-e2fa-4988-8768-3b88b980dd0f" description="Test" expectedErrorType="SALESFORCE:NOT_FOUND">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="12d908a2-d9be-45ff-996d-1e21451597a1" processor="salesforce:query">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Get the data from SOQL Query" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('order-detail-response.json')]" mediaType="application/json" />
+					<munit-tools:error typeId="SALESFORCE:NOT_FOUND" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="ca1cd0af-d130-49d1-a030-3a132bcf9db5" >
+				<munit:attributes value='#[{&#10;  "uriParams": {&#10;		"orderId": 123&#10;  }&#10;}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to get:\v1\orders\(orderId):poc-sapi-ordes-soql-config" doc:id="444c1268-0167-4bc1-ae8b-47c05d83c679" name="get:\v1\orders\(orderId):poc-sapi-ordes-soql-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="cb1d3ec7-cf9a-45f6-88a0-0b1b4d89e4ee" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+
+</mule>

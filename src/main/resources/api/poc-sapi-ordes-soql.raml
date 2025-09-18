@@ -1,0 +1,50 @@
+#%RAML 1.0
+title: poc-sapi-ordes-soql
+version: v1
+protocols:
+  - HTTP
+  - HTTPS
+
+
+traits:
+  clientId: !include trait.raml
+
+
+
+/v1:
+  /orders/{orderId}:
+    uriParameters:
+      orderId:
+        type: string
+        required: true
+        example: "67688"
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/order-details-response-file.json
+  
+  /orders/history:
+    post:
+      is: [clientId]
+      body:
+        application/json:
+          type: !include datatypes/Order-history-request-dataType.raml
+          example: !include examples/order-history-request-file.json
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/order-history-response-file.json
+                
+            
+      
+        
+
+              
+                
+
+          
+      
+                

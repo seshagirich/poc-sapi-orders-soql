@@ -1,0 +1,27 @@
+[
+    {
+        "productName__c": "bulb",
+        "state__c": "Andhra Pradesh",
+        "orderId__c": "15370",
+        "productId__c": "WP1",
+        "price__c": "200",
+        "phone__c": "9988776655",
+        "preferredPaymentMethod__c": "Credit Card",
+        "city__c": "Guntur",
+        "status__c": "Delivered",
+        "street__c": "2-54-4, temple road",
+        "type": "orderCreate__c",
+        "postalCode__c": "553322",
+        "Name": "15370",
+        "orderDate__c": "2025-09-08",
+        "CreatedById": "005WU000007YhjFYAS",
+        "OwnerId": "005WU000007YhjFYAS",
+        "quantity__c": "10",
+        "country__c": "India",
+        "totalAmount__c": "2042",
+        "customerName__c": "Lohith",
+        "Id": null,
+        "LastModifiedById": "005WU000007YhjFYAS",
+        "company__c": null
+    }
+]

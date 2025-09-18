@@ -1,0 +1,23 @@
+[
+    {
+        "CustomerId__c": "",
+        "company__c": "",
+        "CustomerName__c": "",
+        "phone__c": "",
+        "street__c": "",
+        "city__c": "",
+        "state__c": "",
+        "postalCode__c": "",
+        "country__c": "",
+        "preferredPaymentMethod__c": "",
+        "orderId__c": "",
+        "Name": "",
+        "orderDate__c": "",
+        "status__c": "",
+        "totalAmount__c": "",
+        "productId__c": "",
+        "productName__c": "",
+        "quantity__c": "",
+        "price__c": ""
+    }
+]

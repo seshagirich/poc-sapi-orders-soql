@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	
+	 <flow name="get:\v1\orders\(orderId):poc-sapi-ordes-soql-config">
+        <logger level="INFO" doc:name="***start flow***" doc:id="62bd40af-8426-4dce-9856-710eede68f74" message="***start flow*** #[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="cb96f8ea-cb06-4584-b599-5e00114bce8d">
+            <ee:variables>
+                <ee:set-variable variableName="orderId"><![CDATA[attributes.uriParams.'orderId']]></ee:set-variable>
+            
+</ee:variables>
+        </ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="9f6bb1f4-0041-4d09-93f0-841f66dec2ff" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output text/plain
+---
+"SELECT city__c,
+    company__c,
+	customerId__c,
+    country__c,
+    CreatedById,
+    customerName__c,
+    LastModifiedById,
+    Name,
+    orderDate__c,
+    orderId__c,
+    OwnerId,
+    phone__c,
+    postalCode__c,
+    preferredPaymentMethod__c,
+    price__c,
+    productId__c,
+    productName__c,
+    quantity__c,
+    state__c,
+    status__c,
+    street__c,
+    totalAmount__c 
+FROM orderCreate__c
+WHERE orderId__c = " ++ "'" ++ vars.orderId ++ "'"]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="***request to order detail***" doc:id="2343e518-74b8-42b0-ab61-001f17d01066" message="***request to order detail***#[payload]" />
+		<salesforce:query doc:name="Get the data from SOQL Query" doc:id="49cf9084-fc83-4a20-9e9c-a6433d8de5a1" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[#[payload]]]></salesforce:salesforce-query>
+		</salesforce:query>
+		<logger level="INFO" doc:name="*****order detail response******" doc:id="316d8920-715b-4601-94d1-af444ce5a4d3" message="*****order detail response******#[payload]"/>
+		<ee:transform doc:name="Transform Message">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+		<logger level="INFO" doc:name="***end flow***" doc:id="f3bcb959-55f1-4630-96ee-32ab1eafc331" message="***end flow***#[vars]"/>
+		<error-handler ref="errorhandlingError_Handler" />
+    
+</flow>
+	
+	</mule>
